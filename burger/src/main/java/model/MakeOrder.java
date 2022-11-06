@@ -13,20 +13,22 @@ public class MakeOrder {
 		//sumは作り途中のリストの価格合計
 		int sum = 0;
 		
-		while(sum <= o.getTotal()) {
+		while(sum <= o.getBudget()) {
 			//1番安い商品を購入する余裕があるかチェック
-			if(o.getTotal() - sum < 170) {
+			if(o.getBudget() - sum < 170) {
 				break;
 			}
 			//乱数を生成
 			int r = new java.util.Random().nextInt(13);
 			//乱数を用いてメニューリスト配列から商品を選択し、ArrayListに代入
-			if(sum + m.getList()[r].getPrice() > o.getTotal()) {
+			if(sum + m.getList()[r].getPrice() > o.getBudget()) {
 				continue;
 			}
 			sum += m.getList()[r].getPrice();
 			a.add(m.getList()[r]);
 		}
+		//注文総額(sum)をOrder.totalに代入
+		o.setTotal(sum);
 		
 		//一時的な配列にArrayListを代入
 		Product[] list = new Product[a.size()];

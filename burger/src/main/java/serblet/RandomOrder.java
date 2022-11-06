@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.MakeOrder;
+import model.Menu;
+import model.Order;
+
 /**
  * Servlet implementation class RandomOrder
  */
@@ -26,7 +30,24 @@ public class RandomOrder extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//モデルを使って数値を割り出し、スコープに保存、オーダー出力フォームへフォワード
+		//リクエストパラメータ取得
+		int budget = Integer.parseInt(request.getParameter("budget"));
 		
+		//入力値をプロパティに設定
+		Order o = new Order(budget);
+		
+		//MakeOrderのメソッドを使用
+		MakeOrder mOrder = new MakeOrder();
+		Menu menu = new Menu();
+		
+		mOrder.Execute(o, menu);
+		
+		//リクエストスコープ
+		request.setAttribute("order", o);
+		
+		//フォワード
+		RequestDispatcher d = request.getRequestDispatcher("/WEB-INF/jsp/showOrder.jsp");
+		d.forward(request, response);
 	}
 
 }
